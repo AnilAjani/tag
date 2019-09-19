@@ -4,33 +4,17 @@ import java.util.Scanner;
 
 public class Main
 {
-    public static void main(String[] args)
-    {
-     Scanner scanner = new Scanner(System.in);
-        boolean loop = true;
-        while (loop) {
-            System.out.print("> ");
-            String input = scanner.nextLine();
-            if (input.trim().equals("look")) {
-                System.out.println("You look around.");
-            }
-            else if (input.trim().equals("inventory")) {
-                System.out.println("You are carrying nothing.inventory");
-            }
-            else if (input.trim().equals("dance")) {
-                System.out.println("You dance around.");
-            }
-            else if (input.trim().equals("jump")) {
-                System.out.println("You jump around.");
-            }
-           else if (input.trim().equals("exit")) {
-                System.out.println("GoodBye.");
-                loop = false;
-            }
-           else {
-                System.out.println("Huh? I don't understand");
-            }
-        }
+    public static void main(String[] args){
+        System.out.println("Start of main");
+        Game game = new Game(100, 23);
+        System.out.println("Declared game");
+        game.run();
+        System.out.println("After run()");
+    long elapsedTicks = game.getEndTime().getTime() -
+            game.getStartTime().getTime();
+    double elapsedSeconds = elapsedTicks / 1000.0;
+        System.out.println("We were running for " + elapsedSeconds + "s.");
+
 
     }
 }
