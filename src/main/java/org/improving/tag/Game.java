@@ -6,15 +6,7 @@ import java.util.Scanner;
 public class Game {
     private Date startTime;
     private Date endTime;
-
-    public Game(int maxInventory){
-        System.out.println("Max inventroy is: " + maxInventory);
-    }
-    public Game(int maxInventory, int playerAge){
-        this(maxInventory);
-
-        System.out.println("The player's age is: " + playerAge);
-    }
+    
 
     public Date getStartTime() {
         return startTime;
