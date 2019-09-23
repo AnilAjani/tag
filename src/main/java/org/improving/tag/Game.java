@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 @Component
 public class Game {
-    private Command[] commands;
+    private Command[] commands; //linked via BaseEmoteCommand
     private Date startTime;
     private Date endTime;
     private InputOutput io;

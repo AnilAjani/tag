@@ -2,7 +2,7 @@ package org.improving.tag.commands;
 
 import org.improving.tag.InputOutput;
 
-public abstract class BaseEmoteCommand implements Command{
+public abstract class BaseEmoteCommand implements Command{ //Command is [] in Game
     private String cmdText;
     private String cmdResponse;
     private InputOutput io;
