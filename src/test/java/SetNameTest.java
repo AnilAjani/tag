@@ -1,38 +1,45 @@
-import org.improving.tag.commands.MoveCommand;
+import org.improving.tag.Game;
+import org.improving.tag.SpringContext;
+import org.improving.tag.commands.SetNameCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class MoveCommandTests {
-    MoveCommand target;
+public class SetNameTest {
+    SetNameCommand target;
     TestInputOutput io;
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringContext.class);
+
+    Game game = context.getBean(Game.class);
 
     @BeforeEach
-    public void arrange(){
+    public void arrange() {
         // Arrange
         io = new TestInputOutput();
-        target = new MoveCommand(io);
+        target = new SetNameCommand();
     }
     @Test
-    public void execute_should_display_all_words_to_move(){
+    public void execute_should_display_player_name() {
         //Act
-        target.execute( "move to the moon", null);
+        target.execute("@set name=Anil", game);//goodInput
+
         //Assert
-        assertEquals("You proceed to the moon.", io.lastText);
+        assertEquals("Anil", game.getPlayer().getName());
     }
     @Test
-    public void execute_should_display_all_words_but_move_with_spaces(){
+    public void execute_should_display_player_name_with_spaces(){
         //Act
-        target.execute( "            move to the moon           ", null);
+        target.execute( "            @set name=Anil           ", game);
         //Assert
-        assertEquals("You proceed to the moon.", io.lastText);
+        assertEquals("Anil", game.getPlayer().getName());
     }
     @Test
     public void isValid_should_be_true_when_input_is_move(){
         //Act
-        var result = target.isValid("move to the moon", null);
+        var result = target.isValid("@set name=Anil", game);
 
         //Assert
         assertTrue(result);
@@ -41,7 +48,7 @@ public class MoveCommandTests {
     @Test
     public void isValid_should_be_true_when_input_is_move_with_spaces(){
         //Act
-        var result = target.isValid("    move to the moon      ", null);
+        var result = target.isValid("    @set name=Anil      ", game);
 
         //Assert
         assertTrue(result);
@@ -50,7 +57,7 @@ public class MoveCommandTests {
     @Test
     public void isValid_should_be_true_when_input_is_move_in_capital_letters(){
         //Act
-        var result = target.isValid("MOVE TO THE MOON", null);
+        var result = target.isValid("@SET NAME=ANIL", game);
 
         //Assert
         assertTrue(result);
@@ -59,7 +66,7 @@ public class MoveCommandTests {
     @Test
     public void isValid_should_be_false_when_input_is_foobar() {
         //Act
-        var result = target.isValid("foobar", null);
+        var result = target.isValid("foobar", game);
 
         //Assert
         assertFalse(result);
@@ -68,7 +75,7 @@ public class MoveCommandTests {
     @Test
     public void isValid_should_be_false_when_input_is_null() {
         //Act
-        var result = target.isValid(null, null);
+        var result = target.isValid(null, game);
 
         //Assert
         assertFalse(result);
@@ -76,10 +83,11 @@ public class MoveCommandTests {
     @Test
     public void isValid_should_be_false_when_input_is_only_one_word() {
         //Act
-        var result = target.isValid("move", null);
+        var result = target.isValid("@set", game);
 
         //Assert
         assertFalse(result);
     }
+
 
 }

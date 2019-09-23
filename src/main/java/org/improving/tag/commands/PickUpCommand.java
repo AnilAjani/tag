@@ -1,5 +1,6 @@
 package org.improving.tag.commands;
 
+import org.improving.tag.Game;
 import org.improving.tag.InputOutput;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,7 @@ public class PickUpCommand implements Command {
         this.io = io;
     }
     @Override
-    public boolean isValid(String input) {
+    public boolean isValid(String input, Game game) {
         if (input == null) {
             return false;
         }
@@ -24,7 +25,7 @@ public class PickUpCommand implements Command {
         }
 
     @Override
-    public void execute(String input) {
+    public void execute(String input, Game game) {
         input = input.trim();
         var destination = input.substring(5);
         io.displayText("You picked " + destination + ".");

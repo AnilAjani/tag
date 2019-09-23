@@ -22,7 +22,7 @@ public class DanceCommandTests {
     @Test
     public void execute_should_return_phrase(){
         //Act
-        target.execute(null);
+        target.execute(null, null);
         //Assert
         assertEquals("You dance around", io.lastText);
     }
@@ -30,7 +30,7 @@ public class DanceCommandTests {
     @Test
     public void isValid_should_be_true_when_input_is_dance(){
         //Act
-        var result = target.isValid("dance");
+        var result = target.isValid("dance", null);
 
         //Assert
         assertTrue(result);
@@ -39,7 +39,7 @@ public class DanceCommandTests {
     @Test
     public void isValid_should_be_true_when_input_is_dance_with_spaces(){
         //Act
-        var result = target.isValid("     dance     ");
+        var result = target.isValid("     dance     ", null);
 
         //Assert
         assertTrue(result);
@@ -48,7 +48,7 @@ public class DanceCommandTests {
     @Test
     public void isValid_should_be_true_when_input_is_dance_in_capital_letters(){
         //Act
-        var result = target.isValid("DANCE");
+        var result = target.isValid("DANCE", null);
 
         //Assert
         assertTrue(result);
@@ -57,7 +57,7 @@ public class DanceCommandTests {
     @Test
     public void isValid_should_be_false_when_input_is_foobar() {
         //Act
-        var result = target.isValid("foobar");
+        var result = target.isValid("foobar", null);
 
         //Assert
         assertFalse(result);
@@ -66,7 +66,7 @@ public class DanceCommandTests {
     @Test
     public void isValid_should_be_false_when_input_is_null() {
         //Act
-        var result = target.isValid(null);
+        var result = target.isValid(null, null);
 
         //Assert
         assertFalse(result);
