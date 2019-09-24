@@ -1,12 +1,16 @@
 import org.improving.tag.Game;
+import org.improving.tag.Player;
 import org.improving.tag.SpringContext;
 import org.improving.tag.commands.SetNameCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+//import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.time;
+//import static javax.print.attribute.TextSyntax.verify;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.*;
 
 public class SetNameTest {
     SetNameCommand target;
@@ -20,6 +24,14 @@ public class SetNameTest {
         // Arrange
         io = new TestInputOutput();
         target = new SetNameCommand();
+        game = mock(Game.class);
+
+        Player player = new Player();
+        player.setName("hi");
+        player.setHitPoints(50);
+        when(game.getPlayer()).thenReturn(player);
+
+
     }
     @Test
     public void execute_should_display_player_name() {
@@ -28,6 +40,14 @@ public class SetNameTest {
 
         //Assert
         assertEquals("Anil", game.getPlayer().getName());
+    }
+    @Test
+    public void execute_should_mock() {
+        //Act
+        target.execute("@set name=Anil", game);//goodInput
+
+        //Assert
+        verify(game, times(2)).getPlayer();
     }
     @Test
     public void execute_should_display_player_name_with_spaces(){
@@ -44,7 +64,6 @@ public class SetNameTest {
         //Assert
         assertTrue(result);
     }
-
     @Test
     public void isValid_should_be_true_when_input_is_move_with_spaces(){
         //Act
