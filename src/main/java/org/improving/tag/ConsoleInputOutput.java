@@ -18,7 +18,7 @@ public class ConsoleInputOutput implements InputOutput {
     }
     @Override
     public void displayPrompt(String prompt){
-        System.out.println(prompt);
+        System.out.print(prompt);
     }
 
 }

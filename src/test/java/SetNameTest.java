@@ -26,11 +26,6 @@ public class SetNameTest {
         target = new SetNameCommand();
         game = mock(Game.class);
 
-        Player player = new Player();
-        player.setName("hi");
-        player.setHitPoints(50);
-        when(game.getPlayer()).thenReturn(player);
-
 
     }
     @Test
@@ -43,11 +38,17 @@ public class SetNameTest {
     }
     @Test
     public void execute_should_mock() {
+        Player player = new Player(null);
+        player.setName("hi");
+        player.setHitPoints(50);
+        player = spy(player);
+        when(game.getPlayer()).thenReturn(player);
+
         //Act
         target.execute("@set name=Anil", game);//goodInput
 
         //Assert
-        verify(game, times(2)).getPlayer();
+        verify(player).setName("Anil");
     }
     @Test
     public void execute_should_display_player_name_with_spaces(){
