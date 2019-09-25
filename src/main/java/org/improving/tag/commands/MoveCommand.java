@@ -47,6 +47,6 @@ public class MoveCommand implements Command {
             return;
         }
         game.getPlayer().setLocation(exit.getDestination());
-        io.displayText("You travel " + exit.getName() + ".");
+        io.displayText("You're traveling on " + exit.getName() + ".");
     }
 }
