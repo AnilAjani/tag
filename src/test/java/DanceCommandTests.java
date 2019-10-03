@@ -39,7 +39,7 @@ public class DanceCommandTests {
     @Test
     public void isValid_should_be_true_when_input_is_dance_with_spaces(){
         //Act
-        var result = target.isValid("     dance     ", null);
+        var result = target.isValid("      dance     ", null);
 
         //Assert
         assertTrue(result);

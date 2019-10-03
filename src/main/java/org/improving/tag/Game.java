@@ -1,10 +1,12 @@
 package org.improving.tag;
 
 import org.improving.tag.commands.*;
+import org.improving.tag.items.UniqueItems;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
+import java.util.List;
 
 @Component
 public class Game {
@@ -14,6 +16,7 @@ public class Game {
     private InputOutput io;
     private Player p;
     private Location startingLocation;
+    private List<Location> locationList = new ArrayList<>();
     private final SaveGameFactory saveFactory;
 
     public Game(Command[] commands, InputOutput io, SaveGameFactory saveFactory){
@@ -55,19 +58,22 @@ public class Game {
 
         boolean loop = true;
         while (loop) {
-            io.displayPrompt("> ");
-            String input = io.receiveInput();
-            Command validCommand = getValidCommand(input);
-            if (null != validCommand) {
-                validCommand.execute(input, this);
-            }else if (input.trim().equalsIgnoreCase("exit")) {
-                saveFactory.save(this);
-                io.displayText("GoodBye.");
-                loop = false;
-            }
-            else {
-                io.displayText("Huh? I don't understand.");
+            try {
+                io.displayPrompt("> ");
+                String input = io.receiveInput();
+                Command validCommand = getValidCommand(input);
+                if (null != validCommand) {
+                    validCommand.execute(input, this);
                 }
+//            else if (input.trim().equalsIgnoreCase("exit")) {
+//                saveFactory.save(this);
+//                io.displayText("GoodBye.");
+//                loop = false;
+//            }
+                else {
+                    io.displayText("Huh? I don't understand.");
+                }
+            } catch (GameExitException ex){loop = false;}
         }
         this.setEndTime(new Date());
     }
@@ -85,39 +91,55 @@ public class Game {
     private Location buildWorld(){
         var tdh = new Location();
         tdh.setName("The Deathly Hallows");
+        this.locationList.add(tdh);
 
         var td = new Location();
         td.setName("The Desert");
+        this.locationList.add(td);
 
         var ta = new Location();
+        ta.setAdversary(new Adversary("Dude"));
+        ta.setTreasureChest(new TreasureChest(UniqueItems.BLUE_SHELL, "A shell from the Amazon"));
         ta.setName("The Amazon");
+        this.locationList.add(ta);
 
         var tmcs = new Location();
         tmcs.setName("The Mac & Cheese Shop");
+        tmcs.setTreasureChest(new TreasureChest(UniqueItems.THE_ONE_RING, "Kraft Box"));
+        this.locationList.add(tmcs);
 
         var tvm = new Location();
         tvm.setName("The Velvet Moose");
+        this.locationList.add(tvm);
 
         var tap = new Location();
         tap.setName("The Airport");
+        this.locationList.add(tap);
 
         var tict = new Location();
         tict.setName("The Ice Cream Truck");
+        this.locationList.add(tict);
 
         var mount = new Location();
         mount.setName("The Mountains");
+        this.locationList.add(mount);
 
         var tr = new Location();
         tr.setName("The Reef");
+        this.locationList.add(tr);
 
         var mall = new Location();
         mall.setName("The Mall");
+        this.locationList.add(mall);
 
         var mtd = new Location();
         mtd.setName("Mount Doom");
+        this.locationList.add(mtd);
+        mtd.setAdversary(new Adversary("Sauron"));
 
         var tvd = new Location();
         tvd.setName("The Volcano of Doom");
+        this.locationList.add(tvd);
 
         //exits from the deathly hallows
         tdh.getExit().add(new Exit("Heaven Ave", tmcs, "h", "heaven", "ave"));
@@ -169,4 +191,12 @@ public class Game {
     }
 
 
-}
+    public Location getLocationOf(String intendedLocationName) {
+        for (Location location : locationList) {
+            if (intendedLocationName.equalsIgnoreCase(location.getName())) {
+                return location;
+            }
+        }
+        return null;
+    }
+    }

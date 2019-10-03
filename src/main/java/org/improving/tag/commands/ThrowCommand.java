@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ThrowCommand extends BaseEmoteCommand {
     public ThrowCommand (InputOutput io){
-        super("throw", "You threw the item", io);
+        super("You threw it", io, "throw");
     }
 }

@@ -1,3 +1,5 @@
+import org.improving.tag.InputOutput;
+import org.improving.tag.MovementStore;
 import org.improving.tag.commands.MoveCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,12 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class MoveCommandTests {
     MoveCommand target;
     TestInputOutput io;
+    MovementStore ms;
 
     @BeforeEach
     public void arrange(){
         // Arrange
         io = new TestInputOutput();
-        target = new MoveCommand(io);
+        target = new MoveCommand(io, ms);
     }
     @Test
     public void execute_should_display_all_words_to_move(){

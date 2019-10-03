@@ -5,7 +5,11 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 // created to save game outside of saving on disk
@@ -21,5 +25,16 @@ public class FileSystemAdapter {
         }
 
         return file.getAbsolutePath();
+    }
+
+    public Map<String, String> loadFile(String path) throws IOException {
+        List<String> contents = Files.readAllLines(Path.of(path));
+        Map<String, String> properties = new HashMap<>();
+
+        for (String line : contents){
+            String[] temp = line.split("\\|");
+            properties.put(temp[0], temp[1]);
+        }
+        return properties;
     }
 }
