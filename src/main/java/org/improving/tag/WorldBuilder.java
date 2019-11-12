@@ -1,103 +1,57 @@
 package org.improving.tag;
 
-import org.improving.tag.commands.*;
+//import org.improving.tag.DataBase.ExitDOA;
+//import org.improving.tag.DataBase.LocationDOA;
 import org.improving.tag.items.UniqueItems;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Component
-public class Game {
-    private Command[] commands;
-    private Date startTime;
-    private Date endTime;
-    private InputOutput io;
-    private Player p;
-    private Location startingLocation;
+public class WorldBuilder {
+
+    //private List<Exit> exitList = new ArrayList<>();
     private List<Location> locationList = new ArrayList<>();
-    private List<UniqueItems> uniqueItemsList = new ArrayList<>();
-    private final SaveGameFactory saveFactory;
+    private LocationRepo locationRepo;
+    private ExitRepo exitRepo;
+    //public LocationDOA locationDOA;
+    //public ExitDOA exitDOA;
 
-    public Game(Command[] commands, InputOutput io, SaveGameFactory saveFactory, WorldBuilder worldBuilder) {
-        startingLocation = worldBuilder.buildWorld();
-        locationList = worldBuilder.getLocationList();
-        this.commands = commands;
-        this.io = io;
-        this.p = new Player(startingLocation);
-        this.saveFactory = saveFactory;
+
+
+    public WorldBuilder(LocationRepo locationRepo, ExitRepo exitRepo) {
+        //this.locationDOA = locationDOA;
+        this.locationRepo = locationRepo;
+        this.exitRepo = exitRepo;
+
     }
-
-    public Location getStartingLocation() {
-        return startingLocation;
-    }
-
-    public Player getPlayer() {
-        return p;
-    }
-
-    public Date getStartTime() {
-
-        return startTime;
-    }
-
-    private void setStartTime(Date startTime) {
-
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    private void setEndTime(Date endTime) {
-
-        this.endTime = endTime;
-    }
-
-    public void run() {
-        this.setStartTime(new Date());
-
-
-        boolean loop = true;
-        while (loop) {
-            try {
-                io.displayPrompt("> ");
-                String input = io.receiveInput();
-                Command validCommand = getValidCommand(input);
-                if (null != validCommand) {
-                    validCommand.execute(input, this);
-                }
-//            else if (input.trim().equalsIgnoreCase("exit")) {
-//                saveFactory.save(this);
-//                io.displayText("GoodBye.");
-//                loop = false;
-//            }
-                else {
-                    io.displayText("Huh? I don't understand.");
-                }
-            } catch (GameExitException ex) {
-                loop = false;
-            }
+    @Transactional
+    public Location buildWorld() {
+        try {
+            List<Location> locations = locationRepo.findAllByName();
+            List<Exit> exit = exitRepo.findAllByName();
+//            for (Location location : locations) {
+//                List<Exit> exits = exitRepo.findAllByName((int) location.getId());
+//                exits.forEach(exit -> {
+//                    Location destination = locations.stream().
+//                            filter(l -> l.getId() == exitRep())
+//                            .findFirst().orElseThrow();
+//                    exit.setDestination(destination);
+//                    location.addExit(exit);
+//                });
+           // }
+            locationList = locations;
+            return locationList.get(2);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        this.setEndTime(new Date());
-    }
-
-    private Command getValidCommand(String input) {
-        Command validCommand = null;
-        for (Command command : commands) {
-            if (command.isValid(input, this)) {
-                validCommand = command;
-            }
+        return null;
+           // return buildHardCodedWorld();
         }
-        return validCommand;
-    }
 
-
-    //    private Location buildWorld(){
+//    private Location buildHardCodedWorld() {
 //        var tdh = new Location();
 //        tdh.setName("The Deathly Hallows");
 //        tdh.setTreasureChest(new TreasureChest(UniqueItems.MAGICAL_WAND, "Forbidden Treasure"));
@@ -158,16 +112,16 @@ public class Game {
 //
 //        //exits from the deathly hallows
 //        tdh.getExit().add(new Exit("Heaven Ave", tmcs, "h", "heaven", "ave"));
-//        tdh.getExit().add(new Exit("The Deathly Brownie",td,"tdb", "deathly","brownie"));
+//        tdh.getExit().add(new Exit("The Deathly Brownie", td, "tdb", "deathly", "brownie"));
 //
 //        //exits from the desert
 //        td.getExit().add(new Exit("The Dock", tap, "dock", "the dock"));
-//        td.getExit().add(new Exit("Camel Path",ta,"cp", "camel", "path"));
-//        td.getExit().add(new Exit("Rocky Road",tict, "rock", "rocky", "road", "rr"));
+//        td.getExit().add(new Exit("Camel Path", ta, "cp", "camel", "path"));
+//        td.getExit().add(new Exit("Rocky Road", tict, "rock", "rocky", "road", "rr"));
 //
-//       //exits from the mac and cheese shop
-//        tmcs.getExit().add(new Exit("Highway 121", ta,  "hwy 121", "h121", "121"));
-//        tmcs.getExit().add(new Exit("Paradise Rd",tr, "paradise", "rd", "pr"));
+//        //exits from the mac and cheese shop
+//        tmcs.getExit().add(new Exit("Highway 121", ta, "hwy 121", "h121", "121"));
+//        tmcs.getExit().add(new Exit("Paradise Rd", tr, "paradise", "rd", "pr"));
 //        tmcs.getExit().add(new Exit("Highway 21", tvd, "hwy 21", "h21", "21"));
 //
 //        //exit from the velvet moose
@@ -175,7 +129,7 @@ public class Game {
 //        tvm.getExit().add(new Exit("The Front Door", ta, "front door", "front", "door"));
 //
 //        //exit from the ice cream truck
-//        tict.getExit().add(new Exit("Magic Portal",mtd, "magic", "portal", "mp"));
+//        tict.getExit().add(new Exit("Magic Portal", mtd, "magic", "portal", "mp"));
 //
 //        //exit from airport
 //        tap.getExit().add(new Exit("Flight 121", mount, "flight", "f121", "121"));
@@ -183,7 +137,7 @@ public class Game {
 //
 //        //exit from the mountains
 //        mount.getExit().add(new Exit("The Lava Flow", tvd, "lava", "flow", "lf"));
-//        mount.getExit().add(new Exit("The Narrow Trail",mtd, "narrow trail", "nt"));
+//        mount.getExit().add(new Exit("The Narrow Trail", mtd, "narrow trail", "nt"));
 //        mount.getExit().add(new Exit("The Plane", ta, "plane", "tp"));
 //        mount.getExit().add(new Exit("Bike Trail", tr, "bike", "bt"));
 //
@@ -196,7 +150,7 @@ public class Game {
 //
 //        //exit from the mall
 //        mall.getExit().add(new Exit("Path to Doom", mtd, "path", "to doom", "pd"));
-//        mall.getExit().add(new Exit("An Escalator of Doom", tvd, "escalator", "ed" ));
+//        mall.getExit().add(new Exit("An Escalator of Doom", tvd, "escalator", "ed"));
 //
 //        //exits from mount doom
 //        mtd.getExit().add(new Exit("Jump into lava", tvd, "jump", "lava"));
@@ -204,8 +158,7 @@ public class Game {
 //
 //        return tdh;
 //    }
-//
-//
+
     public Location getLocationOf(String intendedLocationName) {
         for (Location location : locationList) {
             if (intendedLocationName.equalsIgnoreCase(location.getName())) {
@@ -214,4 +167,9 @@ public class Game {
         }
         return null;
     }
+
+    public List<Location> getLocationList() {
+        return locationList;
+    }
 }
+

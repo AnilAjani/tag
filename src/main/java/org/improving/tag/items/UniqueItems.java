@@ -3,9 +3,14 @@ package org.improving.tag.items;
 import org.improving.tag.Location;
 import org.improving.tag.TreasureChest;
 
+import javax.persistence.Converter;
+
 public enum UniqueItems implements Item{
     THE_ONE_RING("A Golden Ring", "The One Ring"),
-    BLUE_SHELL("Blue Yoshi Shell", "Blue Shell"),
+    SHIELD("For protection, Duh", "A Shield"),
+    MAGICAL_WAND("To do magical stuff", "Magical Wand"),
+    PLANE_TICKET("How else are you going to fly?", "A plane ticket"),
+    FIRE_PROOF_SUIT("When you play with fire", "Fire proof suit"),
     NOTHING("", "");
 
     private final String description;

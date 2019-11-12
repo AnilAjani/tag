@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OpenCommand extends BaseAliasedCommand {
+
     public OpenCommand(InputOutput io, String... aliases) {
         super(io,"open", "o");
     }
@@ -18,7 +19,7 @@ public class OpenCommand extends BaseAliasedCommand {
         if (treasureChest == TreasureChest.NO_TREASURE)
             io.displayText("Nothing Here!");
         else {
-            io.displayText("You open the chest to reveal " + treasureChest.getItem());
+            io.displayText("You open the chest to reveal " + game.getPlayer().getLocation().openTreasureChest());
             game.getPlayer().getInventory().addItem(treasureChest.getItem());
         }
     }

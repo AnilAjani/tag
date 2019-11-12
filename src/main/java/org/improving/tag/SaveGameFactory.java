@@ -1,5 +1,7 @@
 package org.improving.tag;
 
+import org.improving.tag.items.Item;
+import org.improving.tag.items.UniqueItems;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -17,8 +19,10 @@ public class SaveGameFactory {
 
     public String save(Game game) {
         var locationName = game.getPlayer().getLocation().getName();
+        var inventory = game.getPlayer().getInventory();
         Map<String, String> saveContents = new HashMap<>();
-        saveContents.put("location", locationName);
+        saveContents.put("location", locationName + "\n");
+        saveContents.put("items", inventory + "\n");
 
         String path = null;
         try {
@@ -29,7 +33,6 @@ public class SaveGameFactory {
         }
         return path;
     }
-
     public void load(String path, Game g) {
         Map<String, String> saveContents;
         try {
@@ -42,6 +45,8 @@ public class SaveGameFactory {
 
         Location lastKnownLocation  = g.getLocationOf(saveContents.get("location"));
         g.getPlayer().setLocation(lastKnownLocation);
+
+
     }
 
 }

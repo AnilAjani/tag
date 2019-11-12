@@ -1,9 +1,13 @@
 package org.improving.tag;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import javax.sql.DataSource;
 import javax.swing.text.AbstractDocument;
 import java.util.Random;
 import java.util.Scanner;
@@ -21,4 +25,18 @@ public class SpringContext {
         return new Random();
 
     }
+//    @Bean
+//    public DataSource createDateSource(){
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+//        dataSource.setUrl("jdbc:mysql://localhost:3306/tag?serverTimezone=UTC");
+//        dataSource.setUsername("ANIL");
+//        dataSource.setPassword("impr0ving");
+//        return dataSource;
+//    }
+//    @Bean
+//    @Autowired
+//    public JdbcTemplate jdbcTemplate(DataSource dataSource){
+//        return new JdbcTemplate(dataSource);
+//    }
 }
